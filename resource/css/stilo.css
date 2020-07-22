@@ -6,3 +6,7 @@
 .table{
     margin-top: 10px;
 }
+
+.selecionado{
+    font-weight: bold;
+}
