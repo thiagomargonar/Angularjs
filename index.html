@@ -17,18 +17,21 @@
 
     <script>
         angular.module("listaTelefonica",[]);
-        angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
+        angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope, $http){
             $scope.app = "Lista Telefonica";
-            $scope.contatos = [
-                {nome:"Pedro", telefone:"9999-9999", selecionado:false, data: new Date(),operadora:{nome:"Oi", codigo:"9999-9999", categoria:"Cel"}},
-                {nome:"Ana", telefone:"9999-9998", selecionado:false, data: new Date(),operadora:{nome:"Vivo", codigo:"9999-9998",categoria:"Cel"}},
-                {nome:"Maria", telefone:"9999-9997", selecionado:false, data: new Date(),operadora:{nome:"Tim", codigo:"9999-9997",categoria:"Fixo"}}
-            ];
+            
+            var carregarContato = function (){
+                $http.get("http://localhost:3412/contatos").then(function (response){
+                    $scope.contatos=response.data;
+                });
+            };
+
             $scope.operadoras = [
                 {nome:"Oi", codigo:"9999-9999", categoria:"Cel", preco:1},
                 {nome:"Vivo", codigo:"9999-9998",categoria:"Cel",preco:2},
                 {nome:"Tim", codigo:"9999-9997",categoria:"Fixo",preco:3}
             ];
+
             $scope.adicionarContato = function(contato){
                 $scope.contatos.push(angular.copy(contato));
                 delete $scope.contato;
@@ -49,6 +52,8 @@
             };
             
             $scope.classe = "selecionado";
+
+            carregarContato();
         });
     </script>
   </head>
