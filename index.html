@@ -23,19 +23,23 @@
             var carregarContato = function (){
                 $http.get("http://localhost:3412/contatos").then(function (response){
                     $scope.contatos=response.data;
+                }).catch(function(response){
+                    $scope.message = "deu ruim"+response.data;
                 });
             };
 
-            $scope.operadoras = [
-                {nome:"Oi", codigo:"9999-9999", categoria:"Cel", preco:1},
-                {nome:"Vivo", codigo:"9999-9998",categoria:"Cel",preco:2},
-                {nome:"Tim", codigo:"9999-9997",categoria:"Fixo",preco:3}
-            ];
+            var carregarOperadoras = function (){
+                $http.get("http://localhost:3412/operadoras").then(function (response){
+                    $scope.operadoras=response.data;
+                });
+            };
 
             $scope.adicionarContato = function(contato){
-                $scope.contatos.push(angular.copy(contato));
+                $http.post("http://localhost:3412/contatos", contato).then(function(reponse){
                 delete $scope.contato;
                 $scope.contatoForm.$setPristine();
+                carregarContato();
+                });
             };
 
             $scope.apagarContato = function(contatos){
@@ -54,11 +58,13 @@
             $scope.classe = "selecionado";
 
             carregarContato();
+            carregarOperadoras();
         });
     </script>
   </head>
   <body ng-controller = "listaTelefonicaCtrl">
     <div class="jumbotron">
+        {{message}}
         <h4 ng-bind="app"></h4>
         <input type="text" ng-model="busca" placeholder="Pesquise aqui" class="form-control"/>
         <table class="table table-striped">
