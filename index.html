@@ -14,53 +14,9 @@
     <!-- AngularJs -->
     <script src="angularjs/angular.js"></script>
     <script src="resource/js/angular-locale_pt-br.js"></script>
-
-    <script>
-        angular.module("listaTelefonica",[]);
-        angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope, $http){
-            $scope.app = "Lista Telefonica";
-            
-            var carregarContato = function (){
-                $http.get("http://localhost:3412/contatos").then(function (response){
-                    $scope.contatos=response.data;
-                }).catch(function(response){
-                    $scope.message = "deu ruim"+response.data;
-                });
-            };
-
-            var carregarOperadoras = function (){
-                $http.get("http://localhost:3412/operadoras").then(function (response){
-                    $scope.operadoras=response.data;
-                });
-            };
-
-            $scope.adicionarContato = function(contato){
-                $http.post("http://localhost:3412/contatos", contato).then(function(reponse){
-                delete $scope.contato;
-                $scope.contatoForm.$setPristine();
-                carregarContato();
-                });
-            };
-
-            $scope.apagarContato = function(contatos){
-                $scope.contatos = contatos.filter(function (contatos){
-                    if(!contatos.selecionado){
-                        return contatos;
-                    } 
-                });
-            };
-
-            $scope.ordenarPor = function(campo){
-                $scope.criterioOrdenacao = campo;
-                $scope.ascendente = !$scope.ascendente;
-            };
-            
-            $scope.classe = "selecionado";
-
-            carregarContato();
-            carregarOperadoras();
-        });
-    </script>
+    <script src="resource/js/app.js"></script>
+    <script src="resource/js/controllers/listaTelefonicaCtrl.js"></script>
+    <script src="resource/js/services/contatosAPIService.js"></script>
   </head>
   <body ng-controller = "listaTelefonicaCtrl">
     <div class="jumbotron">
